@@ -1,4 +1,4 @@
-export function test(): any {
+export function pagination(): any {
     return "That code works fine"
   };
   

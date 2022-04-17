@@ -1,11 +1,10 @@
-import { test } from "./index"
+import { pagination } from "./index"
 
-describe("The Greeting", () => {
+describe("Pagination seven", () => {
   it("returns 'That code works fine'", () => {
+    console.clear()
     const expected = "That code works fine";
-
-    const result = test();
-
+    const result = pagination();
     expect(result).toEqual(expected);
   })
 })
