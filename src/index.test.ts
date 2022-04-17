@@ -1,10 +1,16 @@
-import { pagination } from "./index"
+import { Pagination } from "./index"
 
 describe("Pagination seven", () => {
-  it("returns 'That code works fine'", () => {
-    console.clear()
-    const expected = "That code works fine";
-    const result = pagination();
-    expect(result).toEqual(expected);
+  it("returns the current page in parentheses", () => {
+    const expected = "1 (2) 3 4 5 6 7";
+    const result = new Pagination(2,7);
+    expect(result.result).toEqual(expected);
   })
+
+  it("returns the current page in parentheses", () => {
+    const expected = "1 2 3 4 (5) 6 7";
+    const result = new Pagination(5,7);
+    expect(result.result).toEqual(expected);
+  })
+
 })
