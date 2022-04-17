@@ -25,4 +25,18 @@ describe("Pagination seven", () => {
     expect(result.result).toEqual(expected);
   })
 
+  it("Never show more than 7 elements", () => {
+    const expected = "1 ... 4 (5) 6 ... 9";
+    const result = new Pagination(5,9);
+    expect(result.result).toEqual(expected);
+  })
+
+  it("Never show more than 7 elements", () => {
+    const expected = "1 ... 49 (50) 51 ... 100";
+    const result = new Pagination(50,100);
+    expect(result.result).toEqual(expected);
+  })
+
+
+
 })
