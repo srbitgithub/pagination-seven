@@ -21,20 +21,31 @@ export class Pagination {
     }
 
     calculateArrayWhenItsMoreThanSevenPages(){
-      this.resultArray = [
-        ...this.resultArray, ...this.INITIAL_ITEMS,
-        (this.currentPage - 1).toString(), `(${this.currentPage})`,
-        (this.currentPage + 1).toString(), this.THREE_DOST, this.totalPages.toString()]
-    }
+      if (this.currentPage <= 5)
+      {
+        console.log('Estoy en el sitio correcto')
+        for (let i:number = 1; i <= 5; i++){
+          if (i === this.currentPage) this.resultArray.push(`(${i})`) 
+          else this.resultArray.push(i.toString())
+        }
+        this.resultArray.push (this.THREE_DOST)
+        this.resultArray.push (this.totalPages.toString())
+      }
+      else{
+        this.resultArray = [
+          ...this.resultArray, ...this.INITIAL_ITEMS,
+          (this.currentPage - 1).toString(), `(${this.currentPage})`,
+          (this.currentPage + 1).toString(), this.THREE_DOST, this.totalPages.toString()]
+        }
+      }
+
 
     main(){
       if (this.totalPages <= 7) this.calculateArrayWhenSevenOrLessPages()
       else this.calculateArrayWhenItsMoreThanSevenPages()
 
-      //console.log('resultArray: ' + this.resultArray)
       let kko:string = this.resultArray.toString()
       this.result = kko.split(',').join(' ')
-      //this.result = this.result.substring(1)
       console.log('result: ' + this.result)
     }
 
