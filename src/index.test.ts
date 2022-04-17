@@ -13,4 +13,16 @@ describe("Pagination seven", () => {
     expect(result.result).toEqual(expected);
   })
 
+  it("Page number dinamic", () => {
+    const expected = "1 (2) 3 4 5";
+    const result = new Pagination(2,5);
+    expect(result.result).toEqual(expected);
+  })
+
+  it("Page number dinamic", () => {
+    const expected = "1 (2) 3 4 5 6 7";
+    const result = new Pagination(2,7);
+    expect(result.result).toEqual(expected);
+  })
+
 })
