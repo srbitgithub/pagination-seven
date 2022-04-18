@@ -5,7 +5,7 @@ export class Pagination {
     totalPages:number = 0
     arrayVissible:string[] = []
     INITIAL_ITEMS:string[] = ['1', '...']
-    THREE_DOST:string = '...'
+    THREE_DOTS:string = '...'
 
     constructor(_currentPage:number, _totalPages:number){
       this.currentPage = _currentPage
@@ -21,33 +21,61 @@ export class Pagination {
     }
 
     calculateArrayWhenItsMoreThanSevenPages(){
-      if (this.currentPage <= 5)
+      if (this.currentPage === 5)
       {
-        console.log('Estoy en el sitio correcto')
-        for (let i:number = 1; i <= 5; i++){
+        this.resultArray = [...this.INITIAL_ITEMS]
+        for (let i:number = 4; i <= 6; i++)
+        {
+          if (i === this.currentPage) this.resultArray.push(`(${i})`)
+          else this.resultArray.push(i.toString())
+        }
+        this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
+        return
+      }
+      if (this.currentPage < 5)
+      {
+        for (let i:number = 1; i <= 5; i++)
+        {
           if (i === this.currentPage) this.resultArray.push(`(${i})`) 
           else this.resultArray.push(i.toString())
         }
-        this.resultArray.push (this.THREE_DOST)
-        this.resultArray.push (this.totalPages.toString())
-      }
-      else{
-        this.resultArray = [
-          ...this.resultArray, ...this.INITIAL_ITEMS,
-          (this.currentPage - 1).toString(), `(${this.currentPage})`,
-          (this.currentPage + 1).toString(), this.THREE_DOST, this.totalPages.toString()]
-        }
+        this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
+        return
       }
 
+      if (this.currentPage === this.totalPages)
+      {
+        for (let i:number = 1; i <= 5; i++)
+        {
+          this.resultArray.push(i.toString())
+        }
+        this.resultArray = [...this.resultArray, this.THREE_DOTS, `(${this.totalPages})`]
+        return
+      }
+
+      if (this.currentPage >= this.totalPages - 5)
+      {
+        this.resultArray = [...this.INITIAL_ITEMS]
+        for (let i:number = this.totalPages - (5 - 1); i <= this.totalPages; i++)
+        {
+          if (i === this.currentPage) this.resultArray.push(`(${i})`)
+          else this.resultArray.push(i.toString())
+        }
+        return
+      }
+
+      this.resultArray = [
+                          ...this.INITIAL_ITEMS,
+                          (this.currentPage - 1).toString(), `(${this.currentPage})`,
+                          (this.currentPage + 1).toString(), this.THREE_DOTS, this.totalPages.toString()]
+      }
 
     main(){
       if (this.totalPages <= 7) this.calculateArrayWhenSevenOrLessPages()
       else this.calculateArrayWhenItsMoreThanSevenPages()
 
-      let kko:string = this.resultArray.toString()
-      this.result = kko.split(',').join(' ')
+      this.result = this.resultArray.join(' ')
       console.log('result: ' + this.result)
     }
-
 };
   
