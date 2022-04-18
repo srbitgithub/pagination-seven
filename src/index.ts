@@ -8,17 +8,16 @@ export class Pagination {
     INITIAL_ITEMS:string[] = ['1', '...']
     THREE_DOTS:string = '...'
 
-
     constructor(_currentPage:number, _totalPages:number){
       this.currentPage = _currentPage
       this.totalPages = _totalPages
       this.main()
     }
 
-    addContinuesElementsToResulArray(from:number, to:number){
+    addContinuesElementsToResulArray(from:number, to:number, addWithCurrentPage:boolean = true){
       for (let i:number = from; i <= to; i++)
       {
-        if (i === this.currentPage) this.resultArray.push(`(${i})`)
+        if (i === this.currentPage && addWithCurrentPage) this.resultArray.push(`(${i})`)
         else this.resultArray.push(i.toString())
       }
     }
@@ -28,34 +27,32 @@ export class Pagination {
     }
 
     calculateArrayWhenItsMoreThanSevenPages(){
-      if (this.currentPage === 5)
+      if (this.currentPage === this.VISIBLE_CONSECUTIVE_ELEMENTS)
       {
         this.resultArray = [...this.INITIAL_ITEMS]
-        this.addContinuesElementsToResulArray(4, 6)
+        this.addContinuesElementsToResulArray(this.VISIBLE_CONSECUTIVE_ELEMENTS - 1, this.VISIBLE_CONSECUTIVE_ELEMENTS + 1)
         this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
         return
       }
-      if (this.currentPage < 5)
+
+      if (this.currentPage < this.VISIBLE_CONSECUTIVE_ELEMENTS)
       {
-        this.addContinuesElementsToResulArray(1, 5)
+        this.addContinuesElementsToResulArray(1, this.VISIBLE_CONSECUTIVE_ELEMENTS)
         this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
         return
       }
 
       if (this.currentPage === this.totalPages)
       {
-        for (let i:number = 1; i <= 5; i++)
-        {
-          this.resultArray.push(i.toString())
-        }
+        this.addContinuesElementsToResulArray(1, this.VISIBLE_CONSECUTIVE_ELEMENTS, false)
         this.resultArray = [...this.resultArray, this.THREE_DOTS, `(${this.totalPages})`]
         return
       }
 
-      if (this.currentPage >= this.totalPages - 5)
+      if (this.currentPage >= this.totalPages - this.VISIBLE_CONSECUTIVE_ELEMENTS)
       {
         this.resultArray = [...this.INITIAL_ITEMS]
-        this.addContinuesElementsToResulArray(this.totalPages - (5 - 1), this.totalPages)
+        this.addContinuesElementsToResulArray(this.totalPages - (this.VISIBLE_CONSECUTIVE_ELEMENTS - 1), this.totalPages)
         return
       }
 
@@ -66,10 +63,9 @@ export class Pagination {
       }
 
     main(){
-      if (this.totalPages <= 7) this.calculateArrayWhenSevenOrLessPages()
+      if (this.totalPages <= this.PAGINATION) this.calculateArrayWhenSevenOrLessPages()
       else this.calculateArrayWhenItsMoreThanSevenPages()
-
       this.result = this.resultArray.join(' ')
     }
-};
+}
   
