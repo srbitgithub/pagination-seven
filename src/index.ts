@@ -3,9 +3,11 @@ export class Pagination {
     resultArray:string[] = []
     currentPage:number = 0
     totalPages:number = 0
-    arrayVissible:string[] = []
+    PAGINATION:number = 7
+    VISIBLE_CONSECUTIVE_ELEMENTS:number = this.PAGINATION - 2
     INITIAL_ITEMS:string[] = ['1', '...']
     THREE_DOTS:string = '...'
+
 
     constructor(_currentPage:number, _totalPages:number){
       this.currentPage = _currentPage
@@ -13,32 +15,29 @@ export class Pagination {
       this.main()
     }
 
-    calculateArrayWhenSevenOrLessPages(){
-      for (let i:number = 1; i <= this.totalPages; i++){
-        if (i === this.currentPage) this.resultArray.push('(' + i.toString() + ')')
+    addContinuesElementsToResulArray(from:number, to:number){
+      for (let i:number = from; i <= to; i++)
+      {
+        if (i === this.currentPage) this.resultArray.push(`(${i})`)
         else this.resultArray.push(i.toString())
       }
+    }
+
+    calculateArrayWhenSevenOrLessPages(){
+      this.addContinuesElementsToResulArray(1, this.totalPages)
     }
 
     calculateArrayWhenItsMoreThanSevenPages(){
       if (this.currentPage === 5)
       {
         this.resultArray = [...this.INITIAL_ITEMS]
-        for (let i:number = 4; i <= 6; i++)
-        {
-          if (i === this.currentPage) this.resultArray.push(`(${i})`)
-          else this.resultArray.push(i.toString())
-        }
+        this.addContinuesElementsToResulArray(4, 6)
         this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
         return
       }
       if (this.currentPage < 5)
       {
-        for (let i:number = 1; i <= 5; i++)
-        {
-          if (i === this.currentPage) this.resultArray.push(`(${i})`) 
-          else this.resultArray.push(i.toString())
-        }
+        this.addContinuesElementsToResulArray(1, 5)
         this.resultArray = [...this.resultArray, this.THREE_DOTS, this.totalPages.toString()]
         return
       }
@@ -56,11 +55,7 @@ export class Pagination {
       if (this.currentPage >= this.totalPages - 5)
       {
         this.resultArray = [...this.INITIAL_ITEMS]
-        for (let i:number = this.totalPages - (5 - 1); i <= this.totalPages; i++)
-        {
-          if (i === this.currentPage) this.resultArray.push(`(${i})`)
-          else this.resultArray.push(i.toString())
-        }
+        this.addContinuesElementsToResulArray(this.totalPages - (5 - 1), this.totalPages)
         return
       }
 
@@ -75,7 +70,6 @@ export class Pagination {
       else this.calculateArrayWhenItsMoreThanSevenPages()
 
       this.result = this.resultArray.join(' ')
-      console.log('result: ' + this.result)
     }
 };
   
